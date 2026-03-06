@@ -1,14 +1,19 @@
-import connectDB from "../db/connect.js";
-import Product from "../models/Product.js";
+import app from "./app.js";
+import connectDB from "./db/connect.js";
+import dotenv from "dotenv";
 
-export default async function handler(req, res) {
-    try {
-        await connectDB();   // important
+dotenv.config();
 
-        const products = await Product.find();
+const PORT = process.env.PORT || 5000;
 
-        res.status(200).json(products);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+// Initiate DB connection at module load (cached for serverless reuse)
+connectDB().catch((err) => console.error("DB connection failed:", err.message));
+
+// For local development only
+if (process.env.NODE_ENV !== "production") {
+    app.listen(PORT, () => {
+        console.log(`Server running in development mode on port ${PORT}`);
+    });
 }
+
+export default app;
