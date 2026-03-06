@@ -19,7 +19,9 @@ const connectDB = async () => {
                 deprecationErrors: true,
             },
             bufferCommands: false,
-        }).then((mongoose) => mongoose);
+            serverSelectionTimeoutMS: 10000,
+            connectTimeoutMS: 10000,
+        }).then((m) => m);
     }
 
     try {
@@ -27,8 +29,8 @@ const connectDB = async () => {
         console.log(`MongoDB Connected: ${cached.conn.connection.host}`);
     } catch (error) {
         cached.promise = null;
-        console.error(`Error: ${error.message}`);
-        process.exit(1);
+        console.error(`MongoDB connection error: ${error.message}`);
+        throw new Error(`MongoDB connection failed: ${error.message}`);
     }
 
     return cached.conn;
