@@ -56,6 +56,34 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    // Static Admin Login Logic
+    if (email === "admin@usman.pk" && password === "usman123") {
+        let adminUser = await User.findOne({ email });
+
+        if (!adminUser) {
+            // Create the admin user if it doesn't exist
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+
+            adminUser = await User.create({
+                name: "Admin Usman",
+                email: "admin@usman.pk",
+                password: hashedPassword,
+                role: "admin",
+                isVerified: true
+            });
+        }
+
+        return res.json({
+            _id: adminUser._id,
+            name: adminUser.name,
+            email: adminUser.email,
+            role: adminUser.role,
+            token: generateToken(adminUser._id),
+        });
+    }
+
+    // Normal User Login Logic
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
