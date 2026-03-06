@@ -6,8 +6,20 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-// Initiate DB connection at module load (cached for serverless reuse)
-connectDB().catch((err) => console.error("DB connection failed:", err.message));
+// For Vercel Serverless: ensure DB is connected before handling any request
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error("DB Connection Error in Middleware:", err);
+        res.status(500).json({
+            message: "Database connection failed",
+            error: err.message,
+            hint: "Check if MONGODB_URI environment variable is set in Vercel, and ensure Atlas Network Access allows 0.0.0.0/0"
+        });
+    }
+});
 
 // For local development only
 if (process.env.NODE_ENV !== "production") {
@@ -17,3 +29,4 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export default app;
+
