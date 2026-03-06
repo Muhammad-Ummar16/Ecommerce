@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import connectDB from "./db/connect.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -13,11 +14,27 @@ dotenv.config();
 
 const app = express();
 
+// For Vercel Serverless: ensure DB is connected before handling any request
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error("DB Connection Error:", err);
+        res.status(500).json({
+            message: "Database connection failed",
+            error: err.message,
+            hint: "Check if MONGODB_URI environment variable is set in Vercel, and ensure Atlas Network Access allows 0.0.0.0/0"
+        });
+    }
+});
+
 // Strip trailing slash from FRONTEND_URL if present
 const allowedOrigins = [
     process.env.FRONTEND_URL?.replace(/\/$/, ""),
     "http://localhost:5173",
 ].filter(Boolean);
+
 
 // Middleware
 app.use(cors({
