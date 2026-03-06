@@ -35,3 +35,50 @@ export const createCategory = asyncHandler(async (req, res) => {
         throw new Error('Invalid category data');
     }
 });
+// @desc    Get category by ID
+// @route   GET /api/categories/:id
+// @access  Public
+export const getCategoryById = asyncHandler(async (req, res) => {
+    const category = await Category.findById(req.params.id);
+    if (category) {
+        res.json(category);
+    } else {
+        res.status(404);
+        throw new Error('Category not found');
+    }
+});
+
+// @desc    Update a category
+// @route   PUT /api/categories/:id
+// @access  Private/Admin
+export const updateCategory = asyncHandler(async (req, res) => {
+    const { name, description, image } = req.body;
+    const category = await Category.findById(req.params.id);
+
+    if (category) {
+        category.name = name || category.name;
+        category.description = description || category.description;
+        category.image = image || category.image;
+
+        const updatedCategory = await category.save();
+        res.json(updatedCategory);
+    } else {
+        res.status(404);
+        throw new Error('Category not found');
+    }
+});
+
+// @desc    Delete a category
+// @route   DELETE /api/categories/:id
+// @access  Private/Admin
+export const deleteCategory = asyncHandler(async (req, res) => {
+    const category = await Category.findById(req.params.id);
+
+    if (category) {
+        await Category.deleteOne({ _id: category._id });
+        res.json({ message: 'Category removed' });
+    } else {
+        res.status(404);
+        throw new Error('Category not found');
+    }
+});

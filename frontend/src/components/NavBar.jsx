@@ -103,8 +103,7 @@ const NavBar = () => {
                         <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
                             <Link to="/" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>Home</Link>
                             <Link to="/shop" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>Shop</Link>
-
-
+                            <Link to="/collections" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>Collections</Link>
                             <Link to="/new-arrivals" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>New Arrivals</Link>
                             <Link to="/about" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>About Us</Link>
                             <Link to="/contact" className={`text-sm font-medium hover:text-[#7A5C4A] transition-colors ${isScrolled || !isHomePage ? 'text-gray-800' : 'text-gray-800 lg:text-white'}`}>Contact</Link>
@@ -268,6 +267,7 @@ const NavBar = () => {
                     <div className="flex-1 overflow-y-auto py-4 px-5 flex flex-col gap-2">
                         <Link to="/" className="text-lg font-medium text-gray-800 py-3 border-b border-gray-50" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
                         <Link to="/shop" className="text-lg font-medium text-gray-800 py-3 border-b border-gray-50" onClick={() => setIsMobileMenuOpen(false)}>Shop</Link>
+                        <Link to="/collections" className="text-lg font-medium text-gray-800 py-3 border-b border-gray-50" onClick={() => setIsMobileMenuOpen(false)}>Collections</Link>
                         <Link to="/new-arrivals" className="text-lg font-medium text-gray-800 py-3 border-b border-gray-50" onClick={() => setIsMobileMenuOpen(false)}>New Arrivals</Link>
                         <Link to="/about" className="text-lg font-medium text-gray-800 py-3 border-b border-gray-50" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
                         <Link to="/contact" className="text-lg font-medium text-gray-800 py-3" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>

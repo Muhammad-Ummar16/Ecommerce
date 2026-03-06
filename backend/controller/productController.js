@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/product.js';
+import Category from '../models/category.js';
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -103,15 +104,28 @@ export const createProduct = asyncHandler(async (req, res) => {
         discountPrice,
         discountPercent,
         colors,
-        sizes
+        sizes,
+        categoryName
     } = req.body;
 
-    if (!name || !price || !category || stock === undefined) {
+    let categoryId = category;
+
+    if (categoryName) {
+        const categoryExists = await Category.findOne({ name: { $regex: new RegExp(`^${categoryName}$`, 'i') } });
+        if (categoryExists) {
+            categoryId = categoryExists._id;
+        } else {
+            const newCategory = await Category.create({ name: categoryName });
+            categoryId = newCategory._id;
+        }
+    }
+
+    if (!name || !price || !categoryId || stock === undefined) {
         res.status(400);
         throw new Error('Please provide all required fields (Name, Price, Category, Stock)');
     }
 
-    if (category === "") {
+    if (categoryId === "") {
         res.status(400);
         throw new Error('Invalid category ID');
     }
@@ -121,7 +135,7 @@ export const createProduct = asyncHandler(async (req, res) => {
         price,
         description,
         shortDescription,
-        category,
+        category: categoryId,
         stock,
         images,
         isNewArrival,
@@ -153,12 +167,25 @@ export const updateProduct = asyncHandler(async (req, res) => {
         discountPrice,
         discountPercent,
         colors,
-        sizes
+        sizes,
+        categoryName
     } = req.body;
+
+    let categoryId = category;
+
+    if (categoryName) {
+        const categoryExists = await Category.findOne({ name: { $regex: new RegExp(`^${categoryName}$`, 'i') } });
+        if (categoryExists) {
+            categoryId = categoryExists._id;
+        } else {
+            const newCategory = await Category.create({ name: categoryName });
+            categoryId = newCategory._id;
+        }
+    }
 
     const product = await Product.findById(req.params.id);
 
-    if (category === "") {
+    if (categoryId === "") {
         res.status(400);
         throw new Error('Invalid category ID');
     }
@@ -168,7 +195,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
         product.price = price || product.price;
         product.description = description || product.description;
         product.shortDescription = shortDescription || product.shortDescription;
-        product.category = category || product.category;
+        product.category = categoryId || product.category;
         product.stock = stock || product.stock;
         product.images = images || product.images;
         product.isNewArrival = isNewArrival !== undefined ? isNewArrival : product.isNewArrival;

@@ -1,11 +1,13 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import ClientLayout from '../components/ClientLayout';
 
 // Client Pages
 const HomePage = lazy(() => import('../pages/HomePage'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const SignupPage = lazy(() => import('../pages/SignupPage'));
 const ShopPage = lazy(() => import('../pages/ShopPage'));
+const CollectionsPage = lazy(() => import('../pages/CollectionsPage'));
 const ProductDetailsPage = lazy(() => import('../pages/ProductDetailsPage'));
 const NewArrivalsPage = lazy(() => import('../pages/NewArrivalsPage'));
 const AboutPage = lazy(() => import('../pages/AboutPage'));
@@ -27,6 +29,7 @@ const OrderDetailsPage = lazy(() => import('../pages/admin/OrderDetailsPage'));
 const UserListPage = lazy(() => import('../pages/admin/UserListPage'));
 const InquiryListPage = lazy(() => import('../pages/admin/InquiryListPage'));
 const SettingsPage = lazy(() => import('../pages/admin/SettingsPage'));
+const CategoryListPage = lazy(() => import('../pages/admin/CategoryListPage'));
 
 // Fallback Page
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
@@ -41,22 +44,25 @@ const AppRoutes = () => {
     return (
         <Suspense fallback={<LoadingFallback />}>
             <Routes>
-                {/* Client Routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/shop" element={<ShopPage />} />
-                <Route path="/new-arrivals" element={<NewArrivalsPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/product/:id" element={<ProductDetailsPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/order/:id" element={<OrderDetailsPageClient />} />
-                <Route path="/orders" element={<OrderHistoryPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/contact-us" element={<ContactPage />} />
+                {/* Client Routes Wrapper */}
+                <Route element={<ClientLayout />}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/shop" element={<ShopPage />} />
+                    <Route path="/collections" element={<CollectionsPage />} />
+                    <Route path="/new-arrivals" element={<NewArrivalsPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/product/:id" element={<ProductDetailsPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/cart" element={<CartPage />} />
+                    <Route path="/wishlist" element={<WishlistPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/order/:id" element={<OrderDetailsPageClient />} />
+                    <Route path="/orders" element={<OrderHistoryPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/contact-us" element={<ContactPage />} />
+                </Route>
 
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
@@ -71,7 +77,7 @@ const AppRoutes = () => {
                     <Route path="orders/:id" element={<OrderDetailsPage />} />
 
                     {/* Other Admin Routes (Placeholders) */}
-                    <Route path="categories" element={<div className="p-10 text-2xl font-bold">Categories Management</div>} />
+                    <Route path="categories" element={<CategoryListPage />} />
                     <Route path="users" element={<UserListPage />} />
                     <Route path="inquiries" element={<InquiryListPage />} />
                     <Route path="settings" element={<SettingsPage />} />

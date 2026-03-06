@@ -42,6 +42,8 @@ const ProductFormPage = () => {
     const [newColor, setNewColor] = useState('');
     const [newSize, setNewSize] = useState('');
     const [newImageUrl, setNewImageUrl] = useState('');
+    const [categoryType, setCategoryType] = useState(''); // 'tshirt', 'trouser', 'other'
+    const [manualCategoryName, setManualCategoryName] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,6 +57,17 @@ const ProductFormPage = () => {
                         ...prodData,
                         category: prodData.category?._id || ''
                     });
+
+                    // Set category type if it matches Tshirt or Trouser
+                    const catName = prodData.category?.name?.toLowerCase();
+                    if (catName === 'tshirt' || catName === 't-shirt') {
+                        setCategoryType('tshirt');
+                    } else if (catName === 'trouser' || catName === 'trousers') {
+                        setCategoryType('trouser');
+                    } else {
+                        setCategoryType('other');
+                        setManualCategoryName(prodData.category?.name || '');
+                    }
                 }
             } catch (err) {
                 toast.error('Failed to fetch data');
@@ -106,14 +119,40 @@ const ProductFormPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            setLoading(true);
-
             // Manual Validation
-            if (!formData.category) {
+            let finalCategoryName = '';
+            let finalCategoryId = formData.category;
+
+            if (categoryType === 'tshirt') {
+                const cat = categories.find(c => c.name.toLowerCase() === 'tshirt' || c.name.toLowerCase() === 't-shirt');
+                if (cat) finalCategoryId = cat._id;
+                else finalCategoryName = 'Tshirt';
+            } else if (categoryType === 'trouser') {
+                const cat = categories.find(c => c.name.toLowerCase() === 'trouser' || c.name.toLowerCase() === 'trousers');
+                if (cat) finalCategoryId = cat._id;
+                else finalCategoryName = 'Trouser';
+            } else if (categoryType === 'other') {
+                if (!manualCategoryName.trim()) {
+                    toast.error('Please enter a category name');
+                    setLoading(false);
+                    return;
+                }
+                const cat = categories.find(c => c.name.toLowerCase() === manualCategoryName.toLowerCase().trim());
+                if (cat) finalCategoryId = cat._id;
+                else finalCategoryName = manualCategoryName.trim();
+            }
+
+            if (!finalCategoryId && !finalCategoryName) {
                 toast.error('Please select a category');
                 setLoading(false);
                 return;
             }
+
+            const dataToSend = {
+                ...formData,
+                category: finalCategoryId || '',
+                categoryName: finalCategoryName
+            };
 
             if (formData.images.length === 0) {
                 toast.error('Please add at least one product image');
@@ -139,10 +178,10 @@ const ProductFormPage = () => {
             };
 
             if (isEdit) {
-                await axios.put(`${import.meta.env.VITE_API_URL}/products/${id}`, formData, config);
+                await axios.put(`${import.meta.env.VITE_API_URL}/products/${id}`, dataToSend, config);
                 toast.success('Product updated successfully');
             } else {
-                await axios.post(`${import.meta.env.VITE_API_URL}/products`, formData, config);
+                await axios.post(`${import.meta.env.VITE_API_URL}/products`, dataToSend, config);
                 toast.success('Product created successfully');
             }
             navigate('/admin/products');
@@ -378,17 +417,76 @@ const ProductFormPage = () => {
 
                         <div className="space-y-6">
                             <div>
-                                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">Category</label>
-                                <select
-                                    name="category"
-                                    value={formData.category}
-                                    onChange={handleInputChange}
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#3D3028]/5 focus:border-[#3D3028] transition-all appearance-none cursor-pointer font-bold text-[#3D3028]"
-                                    required
-                                >
-                                    <option value="">Select Category</option>
-                                    {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
-                                </select>
+                                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4 ml-1">Product Category</label>
+
+                                <div className="grid grid-cols-1 gap-3 mb-6">
+                                    <button
+                                        type="button"
+                                        onClick={() => setCategoryType('tshirt')}
+                                        className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'tshirt'
+                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            }`}
+                                    >
+                                        <span className="font-bold uppercase tracking-widest text-xs">T-Shirt</span>
+                                        {categoryType === 'tshirt' && <CheckCircle2 className="w-4 h-4" />}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setCategoryType('trouser')}
+                                        className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'trouser'
+                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            }`}
+                                    >
+                                        <span className="font-bold uppercase tracking-widest text-xs">Trouser</span>
+                                        {categoryType === 'trouser' && <CheckCircle2 className="w-4 h-4" />}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setCategoryType('other');
+                                            setFormData(prev => ({ ...prev, category: '' }));
+                                        }}
+                                        className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'other'
+                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            }`}
+                                    >
+                                        <span className="font-bold uppercase tracking-widest text-xs">Other / Manual</span>
+                                        {categoryType === 'other' && <CheckCircle2 className="w-4 h-4" />}
+                                    </button>
+                                </div>
+
+                                {categoryType === 'other' && (
+                                    <div className="space-y-4 animate-fade-in">
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Category Name..."
+                                                value={manualCategoryName}
+                                                onChange={(e) => setManualCategoryName(e.target.value)}
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#3D3028]/5 focus:border-[#3D3028] transition-all font-bold text-[#3D3028]"
+                                            />
+                                        </div>
+                                        <p className="text-[10px] text-gray-400 px-1 italic">New categories will be created automatically if they don't exist.</p>
+
+                                        <div className="pt-4 border-t border-gray-50">
+                                            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1 text-center">Or Select Existing</label>
+                                            <select
+                                                name="category"
+                                                value={formData.category}
+                                                onChange={handleInputChange}
+                                                className="w-full bg-white border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#3D3028]/5 focus:border-[#3D3028] transition-all appearance-none cursor-pointer font-bold text-[#3D3028] text-center"
+                                            >
+                                                <option value="">Existing Categories</option>
+                                                {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
+                                            </select>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex flex-col gap-4">

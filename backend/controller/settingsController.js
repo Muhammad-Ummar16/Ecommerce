@@ -22,6 +22,7 @@ const updateSettings = asyncHandler(async (req, res) => {
         settings.whatsappNumber = req.body.whatsappNumber || settings.whatsappNumber;
         settings.siteName = req.body.siteName || settings.siteName;
         settings.orderDeliveryDays = req.body.orderDeliveryDays || settings.orderDeliveryDays;
+        settings.siteUrl = req.body.siteUrl || settings.siteUrl;
 
         const updatedSettings = await settings.save();
         res.json(updatedSettings);

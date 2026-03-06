@@ -13,6 +13,10 @@ const settingsSchema = new mongoose.Schema({
         type: String,
         default: '5',
     },
+    siteUrl: {
+        type: String,
+        default: 'https://mzwear.pk',
+    },
 }, { timestamps: true });
 
 const Settings = mongoose.model('Settings', settingsSchema);

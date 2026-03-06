@@ -6,7 +6,8 @@ const SettingsContext = createContext();
 export const SettingsProvider = ({ children }) => {
     const [settings, setSettings] = useState({
         whatsappNumber: '+923000000000',
-        siteName: 'MZ Wear'
+        siteName: 'MZ Wear',
+        siteUrl: 'https://mzwear.pk'
     });
     const [loading, setLoading] = useState(true);
 

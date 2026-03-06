@@ -60,29 +60,29 @@ const HomePage = () => {
             <NavBar />
 
             {/* 1. Hero Section */}
-            <section className="relative h-screen min-h-[600px] flex items-center justify-center pt-20">
+            <section className="relative h-screen min-h-[600px] flex items-center justify-center md:justify-start pt-20">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="https://img.freepik.com/premium-photo/pair-shorts-that-are-black-board_1064589-151983.jpg?semt=ais_hybrid&w=740&q=80"
+                        src="Hero1.jpg"
                         alt="Hero Background"
                         className="w-full h-full object-cover object-top"
                     />
-                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="absolute inset-0 bg-black/40 "></div>
                 </div>
 
-                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in-up">
-                    <p className="text-[#E3CBC1] font-bold tracking-[0.3em] uppercase text-sm md:text-base mb-6">New Collection 2026</p>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter mb-6 leading-tight">
+                <div className="relative z-10 text-center md:text-left px-6 md:px-12 lg:px-24 max-w-4xl animate-fade-in-up">
+                    <p className="text-[#E3CBC1] font-bold tracking-[0.3em] uppercase text-xs sm:text-sm md:text-base mb-4 md:mb-6">New Collection 2026</p>
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter mb-4 md:mb-6 leading-tight">
                         Wear Your <br className="hidden md:block" /> Identity
                     </h1>
-                    <p className="text-gray-200 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-10">
+                    <p className="text-gray-200 text-base md:text-xl font-medium max-w-2xl mb-8 md:mb-10 mx-auto md:mx-0">
                         Premium streetwear crafted for comfort and style. Redefine your everyday look with our exclusive, high-quality pieces.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-4">
                         <Link to="/shop" className="w-full sm:w-auto bg-white text-black px-10 py-4 font-bold rounded-full hover:bg-gray-100 transition-all flex items-center justify-center gap-2 hover:scale-105">
                             Shop Now <ArrowRight className="w-5 h-5" />
                         </Link>
-                        <Link to="/collections" className="w-full sm:w-auto bg-transparent border-2 border-white text-white px-10 py-4 font-bold rounded-full hover:bg-white/10 transition-all text-center">
+                        <Link to="/collections" className="w-full sm:w-auto bg-transparent border-2 border-white text-white px-10 py-4 font-bold rounded-full hover:bg-white/10 transition-all text-center flex justify-center items-center">
                             Explore Collection
                         </Link>
                     </div>
@@ -93,34 +93,34 @@ const HomePage = () => {
             {/* 5. Why Choose Us (Trust Builder - Placed here to break up product grids) */}
             <section className="bg-[#f8f5f2] py-16 border-y border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center">
-                        <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-4">
-                                <Truck className="w-8 h-8" />
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center md:text-left">
+                        <div className="flex flex-col items-center md:items-start">
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-3 md:mb-4">
+                                <Truck className="w-6 h-6 md:w-8 md:h-8" />
                             </div>
-                            <h4 className="font-bold text-[#3D3028] mb-1">Fast Shipping</h4>
-                            <p className="text-xs text-gray-500">Free delivery over Rs. 5000</p>
+                            <h4 className="text-sm md:text-base font-bold text-[#3D3028] mb-1">Fast Shipping</h4>
+                            <p className="text-[10px] md:text-xs text-gray-500">Free delivery over Rs. 5000</p>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-4">
-                                <RefreshCcw className="w-8 h-8" />
+                        <div className="flex flex-col items-center md:items-start">
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-3 md:mb-4">
+                                <RefreshCcw className="w-6 h-6 md:w-8 md:h-8" />
                             </div>
-                            <h4 className="font-bold text-[#3D3028] mb-1">Easy Returns</h4>
-                            <p className="text-xs text-gray-500">14-day hassle-free returns</p>
+                            <h4 className="text-sm md:text-base font-bold text-[#3D3028] mb-1">Easy Returns</h4>
+                            <p className="text-[10px] md:text-xs text-gray-500">14-day hassle-free returns</p>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-4">
-                                <ShieldCheck className="w-8 h-8" />
+                        <div className="flex flex-col items-center md:items-start">
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-3 md:mb-4">
+                                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" />
                             </div>
-                            <h4 className="font-bold text-[#3D3028] mb-1">Secure Payment</h4>
-                            <p className="text-xs text-gray-500">100% safe & encrypted</p>
+                            <h4 className="text-sm md:text-base font-bold text-[#3D3028] mb-1">Secure Payment</h4>
+                            <p className="text-[10px] md:text-xs text-gray-500">100% safe & encrypted</p>
                         </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-4">
-                                <Gem className="w-8 h-8" />
+                        <div className="flex flex-col items-center md:items-start">
+                            <div className="w-12 h-12 md:w-16 md:h-16 bg-[#3D3028] rounded-full flex items-center justify-center text-[#E3CBC1] mb-3 md:mb-4">
+                                <Gem className="w-6 h-6 md:w-8 md:h-8" />
                             </div>
-                            <h4 className="font-bold text-[#3D3028] mb-1">Premium Fabric</h4>
-                            <p className="text-xs text-gray-500">High quality materials</p>
+                            <h4 className="text-sm md:text-base font-bold text-[#3D3028] mb-1">Premium Fabric</h4>
+                            <p className="text-[10px] md:text-xs text-gray-500">High quality materials</p>
                         </div>
                     </div>
                 </div>
@@ -129,9 +129,9 @@ const HomePage = () => {
             {/* 3. Best Selling / Featured Products */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-b border-gray-100">
                 <div className="flex justify-between items-end mb-10">
-                    <div>
-                        <h2 className="text-3xl md:text-4xl font-black text-[#3D3028] uppercase tracking-tight mb-2">Best Sellers 🚀</h2>
-                        <p className="text-gray-500">Our most popular pieces right now</p>
+                    <div className="text-center sm:text-left w-full sm:w-auto">
+                        <h2 className="text-2xl md:text-4xl font-black text-[#3D3028] uppercase tracking-tight mb-2">Best Sellers 🚀</h2>
+                        <p className="text-sm md:text-base text-gray-500">Our most popular pieces right now</p>
                     </div>
                     <Link to="/shop" className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#7A5C4A] hover:text-[#3D3028] transition-colors pb-1 border-b-2 border-transparent hover:border-[#3D3028]">
                         View All <ArrowRight className="w-4 h-4" />
@@ -165,9 +165,9 @@ const HomePage = () => {
             {/* 4. New Arrivals */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <div className="flex justify-between items-end mb-10">
-                    <div>
-                        <h2 className="text-3xl md:text-4xl font-black text-[#3D3028] uppercase tracking-tight mb-2">New Arrivals</h2>
-                        <p className="text-gray-500">Fresh styles just dropped</p>
+                    <div className="text-center sm:text-left w-full sm:w-auto">
+                        <h2 className="text-2xl md:text-4xl font-black text-[#3D3028] uppercase tracking-tight mb-2">New Arrivals</h2>
+                        <p className="text-sm md:text-base text-gray-500">Fresh styles just dropped</p>
                     </div>
                 </div>
 
@@ -196,70 +196,21 @@ const HomePage = () => {
                         alt="Discount Banner"
                         className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                     />
+                    <div className="absolute inset-0 backdrop-blur-[4px]"></div>
                 </div>
-                <div className="relative z-10 p-10 md:p-20 text-center">
-                    <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 uppercase tracking-widest mb-6 inline-block rounded-full">Limited Time Offer</span>
-                    <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-4">Get 15% Off <br className="hidden md:block" /> On First Order</h2>
-                    <p className="text-gray-200 text-lg mb-8 max-w-xl mx-auto">Sign up for our newsletter and get an instant discount code for your first purchase.</p>
+                <div className="relative z-10 p-8 md:p-20 text-center md:text-left">
+                    <span className="bg-red-500 text-white text-[10px] md:text-xs font-bold px-3 py-1 uppercase tracking-widest mb-4 md:mb-6 inline-block rounded-full">Limited Time Offer</span>
+                    <h2 className="text-3xl md:text-6xl font-black text-white uppercase tracking-tight mb-3 md:mb-4">Get 15% Off <br className="hidden md:block" /> On First Order</h2>
+                    <p className="text-gray-200 text-sm md:text-lg mb-6 md:mb-8 max-w-xl mx-auto md:mx-0">Sign up for our newsletter and get an instant discount code for your first purchase.</p>
                     <Link to="/signup" className="inline-block bg-white text-black px-10 py-4 font-bold rounded-full hover:bg-gray-100 transition-colors">
                         Claim Offer Now
                     </Link>
                 </div>
             </section>
 
-            {/* 7. Testimonials Section */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-black text-[#3D3028] uppercase tracking-tight mb-3">Customer Love ⭐</h2>
-                        <p className="text-gray-500">Don't just take our word for it</p>
-                    </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                        {testimonials.map(testimonial => (
-                            <div key={testimonial.id} className="bg-[#f8f5f2] p-8 rounded-2xl">
-                                <div className="flex justify-center gap-1 mb-4">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star key={i} className={`w-5 h-5 ${i < testimonial.rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300'}`} />
-                                    ))}
-                                </div>
-                                <p className="text-gray-700 italic mb-6">"{testimonial.review}"</p>
-                                <div className="flex items-center justify-center gap-3">
-                                    <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
-                                    <span className="font-bold text-[#3D3028]">{testimonial.name}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
-            {/* 6. Brand Lifestyle / Instagram Grid */}
-            <section className="w-full overflow-hidden">
-                <div className="text-center mb-10 px-4">
-                    <h2 className="text-2xl md:text-3xl font-black text-[#3D3028] uppercase tracking-tight mb-2">Follow The Vision</h2>
-                    <a href="#" className="flex items-center justify-center gap-2 text-sm font-bold text-gray-500 hover:text-[#7A5C4A] transition-colors">
-                        @mzwear_official <ArrowRight className="w-4 h-4" />
-                    </a>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 border-y border-gray-100">
-                    {[
-                        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80',
-                        'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80',
-                        'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&q=80',
-                        'https://images.unsplash.com/photo-1550614000-4b95dd2cbcc1?w=400&q=80',
-                        'https://images.unsplash.com/photo-1614806687036-74fc21074e50?w=400&q=80',
-                        'https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=400&q=80',
-                    ].map((img, index) => (
-                        <a key={index} href="#" className={`group relative aspect-square overflow-hidden block ${index >= 4 ? 'hidden lg:block' : ''}`}>
-                            <img src={img} alt="Instagram style vibe" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300">
-                                <Heart className="w-8 h-8 text-white fill-white" />
-                            </div>
-                        </a>
-                    ))}
-                </div>
-            </section>
+
 
         </div>
     );

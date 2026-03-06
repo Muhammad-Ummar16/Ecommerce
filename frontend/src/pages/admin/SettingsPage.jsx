@@ -8,7 +8,8 @@ const SettingsPage = () => {
     const [formData, setFormData] = useState({
         whatsappNumber: '',
         siteName: '',
-        orderDeliveryDays: ''
+        orderDeliveryDays: '',
+        siteUrl: ''
     });
     const [savingType, setSavingType] = useState(null); // 'general', 'whatsapp', 'order'
 
@@ -17,7 +18,8 @@ const SettingsPage = () => {
             setFormData({
                 whatsappNumber: settings.whatsappNumber || '',
                 siteName: settings.siteName || '',
-                orderDeliveryDays: settings.orderDeliveryDays || ''
+                orderDeliveryDays: settings.orderDeliveryDays || '',
+                siteUrl: settings.siteUrl || ''
             });
         }
     }, [settings]);
@@ -61,7 +63,7 @@ const SettingsPage = () => {
                                 <h2 className="text-xl font-black text-[#3D3028] uppercase tracking-tight">General Info</h2>
                             </div>
                             <button
-                                onClick={() => handleSave('general', { siteName: formData.siteName })}
+                                onClick={() => handleSave('general', { siteName: formData.siteName, siteUrl: formData.siteUrl })}
                                 disabled={savingType === 'general'}
                                 className="flex items-center gap-2 bg-[#3D3028] text-white px-5 py-2.5 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all disabled:opacity-50"
                             >
@@ -80,6 +82,20 @@ const SettingsPage = () => {
                                 placeholder="e.g. MZ Wear"
                                 className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#3D3028]/5 focus:border-[#3D3028] transition-all font-bold text-[#3D3028]"
                             />
+                        </div>
+
+                        <div className="space-y-3">
+                            <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#7A5C4A] ml-1">
+                                <Globe className="w-3.5 h-3.5" /> Production Site URL
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.siteUrl}
+                                onChange={(e) => setFormData({ ...formData, siteUrl: e.target.value })}
+                                placeholder="e.g. https://mzwear.pk"
+                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-[#3D3028]/5 focus:border-[#3D3028] transition-all font-bold text-[#3D3028]"
+                            />
+                            <p className="text-[10px] text-gray-400 font-medium ml-1 italic">Used for WhatsApp sharing links to avoid 'localhost'.</p>
                         </div>
                     </section>
 

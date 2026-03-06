@@ -59,7 +59,9 @@ const ProductCard = ({ product }) => {
                 <button
                     onClick={(e) => {
                         e.preventDefault();
-                        const message = `Hye! I am interested in ${product.name} with price RS ${product.discountPrice || product.price}. Here is the link: ${window.location.origin}/product/${productId}`;
+                        const siteUrl = settings.siteUrl || window.location.origin;
+                        const productUrl = `${siteUrl}/product/${productId}`;
+                        const message = `*Inquiry from ${settings.siteName || 'your store'}*\n\nHello, I am interested in this product:\n\n*Product:* ${product.name}\n*Price:* Rs. ${(product.discountPrice || product.price).toLocaleString()}\n*Link:* ${productUrl}\n\nPlease let me know about its availability. Thank you!`;
                         const whatsappUrl = `https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
                         window.open(whatsappUrl, '_blank');
                     }}
