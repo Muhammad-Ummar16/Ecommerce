@@ -12,13 +12,13 @@ const connectDB = async () => {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-            serverApi: {
-                version: "1",
-                strict: true,
-                deprecationErrors: true,
-            },
-        }).then((m) => m);
+        const uri = process.env.MONGODB_URI;
+
+        if (!uri) {
+            throw new Error("Please define MONGODB_URI in .env");
+        }
+
+        cached.promise = mongoose.connect(uri).then((mongoose) => mongoose);
     }
 
     try {
@@ -27,7 +27,7 @@ const connectDB = async () => {
     } catch (error) {
         cached.promise = null;
         console.error(`MongoDB connection error: ${error.message}`);
-        throw new Error(`MongoDB connection failed: ${error.message}`);
+        throw error;
     }
 
     return cached.conn;
