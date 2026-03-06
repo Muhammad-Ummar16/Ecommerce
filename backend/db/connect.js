@@ -18,9 +18,6 @@ const connectDB = async () => {
                 strict: true,
                 deprecationErrors: true,
             },
-            bufferCommands: false,
-            serverSelectionTimeoutMS: 10000,
-            connectTimeoutMS: 10000,
         }).then((m) => m);
     }
 

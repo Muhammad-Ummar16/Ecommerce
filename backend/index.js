@@ -6,22 +6,15 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-// For traditional server environments (local dev)
+// Initiate DB connection immediately at module load time.
+// For Vercel: the promise is cached globally, so connection is reused across invocations.
+// Mongoose will buffer queries until the connection is ready.
+connectDB().catch((err) => console.error("Initial DB connection failed:", err.message));
+
+// For local development: start the HTTP server
 if (process.env.NODE_ENV !== "production") {
-    connectDB().then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server is running in development mode on port ${PORT}`);
-        });
-    });
-} else {
-    // For Vercel serverless: connect on each invocation (cached)
-    app.use(async (req, res, next) => {
-        try {
-            await connectDB();
-            next();
-        } catch (err) {
-            res.status(500).json({ message: "Database connection failed", error: err.message });
-        }
+    app.listen(PORT, () => {
+        console.log(`Server is running in development mode on port ${PORT}`);
     });
 }
 
