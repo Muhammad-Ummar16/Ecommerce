@@ -47,7 +47,7 @@ const ProductFormPage = () => {
         const fetchData = async () => {
             try {
                 const { data: catData } = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
-                setCategories(catData);
+                setCategories(catData.categories || catData || []);
 
                 if (isEdit) {
                     const { data: prodData } = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`);
