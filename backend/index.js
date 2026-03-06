@@ -1,21 +1,14 @@
-import app from "./app.js";
-import connectDB from "./db/connect.js";
-import dotenv from "dotenv";
+import connectDB from "../db/connect.js";
+import Product from "../models/Product.js";
 
-dotenv.config();
+export default async function handler(req, res) {
+    try {
+        await connectDB();   // important
 
-const PORT = process.env.PORT || 5000;
+        const products = await Product.find();
 
-// Initiate DB connection immediately at module load time.
-// For Vercel: the promise is cached globally, so connection is reused across invocations.
-// Mongoose will buffer queries until the connection is ready.
-connectDB().catch((err) => console.error("Initial DB connection failed:", err.message));
-
-// For local development: start the HTTP server
-if (process.env.NODE_ENV !== "production") {
-    app.listen(PORT, () => {
-        console.log(`Server is running in development mode on port ${PORT}`);
-    });
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
-
-export default app;
