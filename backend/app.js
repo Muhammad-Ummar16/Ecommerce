@@ -13,9 +13,22 @@ dotenv.config();
 
 const app = express();
 
+// Strip trailing slash from FRONTEND_URL if present
+const allowedOrigins = [
+    process.env.FRONTEND_URL?.replace(/\/$/, ""),
+    "http://localhost:5173",
+].filter(Boolean);
+
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS blocked: ${origin}`));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
