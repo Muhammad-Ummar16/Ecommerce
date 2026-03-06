@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, Truck, RefreshCcw, ShieldCheck, Gem, Star, Heart, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useProducts } from '../hooks/useProducts';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
 
@@ -31,29 +32,26 @@ const testimonials = [
 ];
 
 const HomePage = () => {
-    const [bestSellers, setBestSellers] = useState([]);
-    const [newArrivals, setNewArrivals] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // 1. Fetch Best Sellers (limit 8)
+    const { data: bestSellersData, isLoading: bestSellersLoading } = useProducts({
+        isBestSeller: true,
+        limit: 8
+    });
 
+    // 2. Fetch New Arrivals (limit 4)
+    const { data: newArrivalsData, isLoading: newArrivalsLoading } = useProducts({
+        isNewArrival: true,
+        limit: 4
+    });
+
+    const bestSellers = bestSellersData?.data || [];
+    const newArrivals = newArrivalsData?.data || [];
+    const loading = bestSellersLoading || newArrivalsLoading;
+
+    // Image Preloading for Hero
     useEffect(() => {
-        const fetchHomePageData = async () => {
-            try {
-                setLoading(true);
-                // Fetch best sellers (limit 8)
-                const bestSellersRes = await axios.get(`${import.meta.env.VITE_API_URL}/products?isBestSeller=true&limit=8`);
-                setBestSellers(bestSellersRes.data.data || bestSellersRes.data);
-
-                // Fetch new arrivals (limit 4)
-                const newArrivalsRes = await axios.get(`${import.meta.env.VITE_API_URL}/products?isNewArrival=true&limit=4`);
-                setNewArrivals(newArrivalsRes.data.data || newArrivalsRes.data);
-            } catch (error) {
-                console.error("Error fetching homepage data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHomePageData();
+        const img = new Image();
+        img.src = 'Hero1.jpg';
     }, []);
     return (
         <div className="bg-white min-h-screen pb-20">

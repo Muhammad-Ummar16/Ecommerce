@@ -15,31 +15,11 @@ import {
     ArrowUpRight,
     Loader2
 } from 'lucide-react';
+import { useUsers } from '../../hooks/useAdminHooks';
 
 const UserListPage = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: users = [], isLoading: loading, refetch } = useUsers();
     const [searchTerm, setSearchTerm] = useState('');
-
-    const fetchUsers = async () => {
-        try {
-            setLoading(true);
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const config = {
-                headers: { Authorization: `Bearer ${userInfo.token}` }
-            };
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/admin/users`, config);
-            setUsers(data);
-        } catch (err) {
-            toast.error('Failed to load users');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
 
     const deleteHandler = async (id, name) => {
         if (window.confirm(`Are you sure you want to delete ${name}?`)) {
@@ -50,7 +30,7 @@ const UserListPage = () => {
                 };
                 await axios.delete(`${import.meta.env.VITE_API_URL}/admin/users/${id}`, config);
                 toast.success('User deleted successfully');
-                fetchUsers();
+                refetch();
             } catch (err) {
                 toast.error(err.response?.data?.message || 'Failed to delete user');
             }

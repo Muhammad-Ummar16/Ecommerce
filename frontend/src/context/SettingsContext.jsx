@@ -1,30 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSettingsQuery } from '../hooks/useSettingsHooks';
 
 const SettingsContext = createContext();
 
 export const SettingsProvider = ({ children }) => {
-    const [settings, setSettings] = useState({
-        whatsappNumber: '+923000000000',
-        siteName: 'MZ Wear',
-        siteUrl: 'https://mzwear.pk'
-    });
-    const [loading, setLoading] = useState(true);
-
-    const fetchSettings = async () => {
-        try {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/settings`);
-            setSettings(data);
-        } catch (error) {
-            console.error('Failed to fetch settings:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchSettings();
-    }, []);
+    const { data: settings = { whatsappNumber: '+923000000000', siteName: 'MZ Wear', siteUrl: 'https://mzwear.pk' }, isLoading: loading, refetch } = useSettingsQuery();
 
     const updateSettings = async (newSettings) => {
         try {
@@ -34,8 +15,8 @@ export const SettingsProvider = ({ children }) => {
                     Authorization: `Bearer ${userInfo.token}`
                 }
             };
-            const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/settings`, newSettings, config);
-            setSettings(data);
+            await axios.put(`${import.meta.env.VITE_API_URL}/settings`, newSettings, config);
+            refetch();
             return { success: true };
         } catch (error) {
             console.error('Failed to update settings:', error);
@@ -44,7 +25,7 @@ export const SettingsProvider = ({ children }) => {
     };
 
     return (
-        <SettingsContext.Provider value={{ settings, loading, updateSettings, refreshSettings: fetchSettings }}>
+        <SettingsContext.Provider value={{ settings, loading, updateSettings, refreshSettings: refetch }}>
             {children}
         </SettingsContext.Provider>
     );

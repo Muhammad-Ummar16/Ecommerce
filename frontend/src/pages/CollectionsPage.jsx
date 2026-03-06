@@ -1,20 +1,13 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useCategories } from '../hooks/useCategoryHooks';
 import { ArrowRight, ShoppingBag, LayoutGrid, Filter } from 'lucide-react';
 import NavBar from '../components/NavBar';
 
 const CollectionsPage = () => {
-    // Fetch all categories
-    const { data: categories, isLoading: categoriesLoading } = useQuery({
-        queryKey: ['categories'],
-        queryFn: async () => {
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
-            return data.categories || data || [];
-        }
-    });
+    // Fetch all categories using shared hook
+    const { data: categories, isLoading: categoriesLoading } = useCategories();
 
     // Fetch products (limit to 100 for grouping)
     const { data: productsData, isLoading: productsLoading } = useProducts({ limit: 100 });

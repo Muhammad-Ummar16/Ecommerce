@@ -15,10 +15,10 @@ import {
     AlertCircle,
     CheckCircle2
 } from 'lucide-react';
+import { useCategories } from '../../hooks/useCategoryHooks';
 
 const CategoryListPage = () => {
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: categories = [], isLoading: loading, refetch } = useCategories();
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState(null);
@@ -31,22 +31,6 @@ const CategoryListPage = () => {
         imageUrl: ''
     });
     const [submitting, setSubmitting] = useState(false);
-
-    const fetchCategories = async () => {
-        try {
-            setLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
-            setCategories(data.categories || data || []);
-        } catch (err) {
-            toast.error('Failed to fetch categories');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
 
     const handleOpenModal = (category = null) => {
         if (category) {
@@ -93,7 +77,7 @@ const CategoryListPage = () => {
                 toast.success('Category created successfully');
             }
 
-            fetchCategories();
+            refetch();
             handleCloseModal();
         } catch (err) {
             toast.error(err.response?.data?.message || 'Action failed');
@@ -114,7 +98,7 @@ const CategoryListPage = () => {
             };
             await axios.delete(`${import.meta.env.VITE_API_URL}/categories/${id}`, config);
             toast.success('Category deleted');
-            fetchCategories();
+            refetch();
         } catch (err) {
             toast.error('Failed to delete category');
         }
@@ -142,7 +126,7 @@ const CategoryListPage = () => {
             </div>
 
             {/* Controls Section */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-3xl border border-gray-200 shadow-sm">
                 <div className="relative w-full sm:w-96 group">
                     <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-[#3D3028] transition-colors" />
                     <input
@@ -187,7 +171,7 @@ const CategoryListPage = () => {
             ) : viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredCategories.map((cat) => (
-                        <div key={cat._id} className="group bg-white rounded-[32px] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden">
+                        <div key={cat._id} className="group bg-white rounded-[32px] border border-gray-200 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden">
                             <div className="aspect-[16/10] relative bg-gray-50 overflow-hidden">
                                 {cat.image?.url ? (
                                     <img src={cat.image.url} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -214,7 +198,7 @@ const CategoryListPage = () => {
                             <div className="p-6">
                                 <h3 className="text-lg font-black text-[#3D3028] uppercase tracking-tight mb-2 truncate">{cat.name}</h3>
                                 <p className="text-gray-400 text-xs font-medium truncate mb-4">{cat.description || 'No description provided'}</p>
-                                <div className="flex items-center justify-between pt-4 border-t border-gray-50">
+                                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                                     <span className="text-[10px] font-black uppercase tracking-widest text-[#7A5C4A] bg-[#F4EBE6] px-3 py-1 rounded-full">Collection</span>
                                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Added {new Date(cat.createdAt).toLocaleDateString()}</span>
                                 </div>
@@ -223,7 +207,7 @@ const CategoryListPage = () => {
                     ))}
                 </div>
             ) : (
-                <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden">
+                <div className="bg-white rounded-[32px] border border-gray-200 shadow-sm overflow-hidden">
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-gray-50 border-b border-gray-100">

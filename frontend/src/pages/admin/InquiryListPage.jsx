@@ -18,33 +18,13 @@ import {
     AlertCircle,
     MessageCircle,
 } from 'lucide-react';
+import { useInquiries } from '../../hooks/useAdminHooks';
 
 const InquiryListPage = () => {
-    const [inquiries, setInquiries] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: inquiries = [], isLoading: loading, refetch } = useInquiries();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
     const [selectedInquiry, setSelectedInquiry] = useState(null);
-
-    const fetchInquiries = async () => {
-        try {
-            setLoading(true);
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const config = {
-                headers: { Authorization: `Bearer ${userInfo.token}` }
-            };
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/contacts`, config);
-            setInquiries(data);
-        } catch (err) {
-            toast.error('Failed to load inquiries');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchInquiries();
-    }, []);
 
     const handleUpdateStatus = async (id, status) => {
         try {
@@ -53,7 +33,7 @@ const InquiryListPage = () => {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             };
             await axios.put(`${import.meta.env.VITE_API_URL}/contacts/${id}`, { status }, config);
-            fetchInquiries();
+            refetch();
             if (selectedInquiry?._id === id) {
                 setSelectedInquiry(prev => ({ ...prev, status }));
             }
@@ -71,7 +51,7 @@ const InquiryListPage = () => {
             };
             await axios.delete(`${import.meta.env.VITE_API_URL}/contacts/${id}`, config);
             toast.success('Inquiry deleted');
-            fetchInquiries();
+            refetch();
             if (selectedInquiry?._id === id) setSelectedInquiry(null);
         } catch (err) {
             toast.error('Failed to delete inquiry');

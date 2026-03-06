@@ -14,6 +14,8 @@ import {
     Info,
     CheckCircle2
 } from 'lucide-react';
+import { useCategories } from '../../hooks/useCategoryHooks';
+import { useProduct } from '../../hooks/useProducts';
 
 const ProductFormPage = () => {
     const { id } = useParams();
@@ -21,8 +23,12 @@ const ProductFormPage = () => {
     const isEdit = !!id;
 
     const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(isEdit);
-    const [categories, setCategories] = useState([]);
+
+    // TanStack Query Hooks
+    const { data: categories = [] } = useCategories();
+    const { data: prodData, isLoading: fetchingProduct } = useProduct(isEdit ? id : null);
+
+    const fetching = isEdit ? fetchingProduct : false;
 
     const [formData, setFormData] = useState({
         name: '',
@@ -46,37 +52,24 @@ const ProductFormPage = () => {
     const [manualCategoryName, setManualCategoryName] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data: catData } = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
-                setCategories(catData.categories || catData || []);
+        if (isEdit && prodData) {
+            setFormData({
+                ...prodData,
+                category: prodData.category?._id || ''
+            });
 
-                if (isEdit) {
-                    const { data: prodData } = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`);
-                    setFormData({
-                        ...prodData,
-                        category: prodData.category?._id || ''
-                    });
-
-                    // Set category type if it matches Tshirt or Trouser
-                    const catName = prodData.category?.name?.toLowerCase();
-                    if (catName === 'tshirt' || catName === 't-shirt') {
-                        setCategoryType('tshirt');
-                    } else if (catName === 'trouser' || catName === 'trousers') {
-                        setCategoryType('trouser');
-                    } else {
-                        setCategoryType('other');
-                        setManualCategoryName(prodData.category?.name || '');
-                    }
-                }
-            } catch (err) {
-                toast.error('Failed to fetch data');
-            } finally {
-                setFetching(false);
+            // Set category type if it matches Tshirt or Trouser
+            const catName = prodData.category?.name?.toLowerCase();
+            if (catName === 'tshirt' || catName === 't-shirt') {
+                setCategoryType('tshirt');
+            } else if (catName === 'trouser' || catName === 'trousers') {
+                setCategoryType('trouser');
+            } else {
+                setCategoryType('other');
+                setManualCategoryName(prodData.category?.name || '');
             }
-        };
-        fetchData();
-    }, [id, isEdit]);
+        }
+    }, [isEdit, prodData]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -424,8 +417,8 @@ const ProductFormPage = () => {
                                         type="button"
                                         onClick={() => setCategoryType('tshirt')}
                                         className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'tshirt'
-                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
-                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                            : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             }`}
                                     >
                                         <span className="font-bold uppercase tracking-widest text-xs">T-Shirt</span>
@@ -436,8 +429,8 @@ const ProductFormPage = () => {
                                         type="button"
                                         onClick={() => setCategoryType('trouser')}
                                         className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'trouser'
-                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
-                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                            : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             }`}
                                     >
                                         <span className="font-bold uppercase tracking-widest text-xs">Trouser</span>
@@ -451,8 +444,8 @@ const ProductFormPage = () => {
                                             setFormData(prev => ({ ...prev, category: '' }));
                                         }}
                                         className={`flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${categoryType === 'other'
-                                                ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
-                                                : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
+                                            ? 'border-[#3D3028] bg-[#3D3028] text-white shadow-lg'
+                                            : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             }`}
                                     >
                                         <span className="font-bold uppercase tracking-widest text-xs">Other / Manual</span>
