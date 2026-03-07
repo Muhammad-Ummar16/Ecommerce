@@ -12,7 +12,8 @@ import {
     Image as ImageIcon,
     Tag,
     Info,
-    CheckCircle2
+    CheckCircle2,
+    Loader2
 } from 'lucide-react';
 import { useCategories } from '../../hooks/useCategoryHooks';
 import { useProduct } from '../../hooks/useProducts';
@@ -111,6 +112,9 @@ const ProductFormPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        const startTime = Date.now();
+
         try {
             // Manual Validation
             let finalCategoryName = '';
@@ -181,6 +185,11 @@ const ProductFormPage = () => {
         } catch (err) {
             toast.error(err.response?.data?.message || 'Something went wrong');
         } finally {
+            const duration = Date.now() - startTime;
+            const minTime = 2000;
+            if (duration < minTime) {
+                await new Promise(resolve => setTimeout(resolve, minTime - duration));
+            }
             setLoading(false);
         }
     };
@@ -219,9 +228,13 @@ const ProductFormPage = () => {
                     <button
                         onClick={handleSubmit}
                         disabled={loading}
-                        className="flex items-center gap-2 bg-[#3D3028] text-white px-8 py-3.5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-[#2c221c] transition-all shadow-lg shadow-[#3D3028]/10 disabled:opacity-50"
+                        className="flex items-center gap-2 bg-[#3D3028] text-white px-8 py-3.5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-[#2c221c] transition-all shadow-lg shadow-[#3D3028]/10 disabled:opacity-50 min-w-[180px] justify-center"
                     >
-                        {loading ? 'Saving...' : <><Save className="w-4 h-4" /> Save Product</>}
+                        {loading ? (
+                            <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                        ) : (
+                            <><Save className="w-4 h-4" /> Save Product</>
+                        )}
                     </button>
                 </div>
             </div>
@@ -569,9 +582,13 @@ const ProductFormPage = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full flex items-center justify-center gap-2 bg-[#3D3028] text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-[#2c221c] transition-all shadow-lg"
+                            className="w-full flex items-center justify-center gap-2 bg-[#3D3028] text-white py-4 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-[#2c221c] transition-all shadow-lg min-h-[52px]"
                         >
-                            {loading ? 'Saving...' : <><Save className="w-4 h-4" /> Save Product</>}
+                            {loading ? (
+                                <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+                            ) : (
+                                <><Save className="w-4 h-4" /> Save Product</>
+                            )}
                         </button>
                         <button
                             type="button"

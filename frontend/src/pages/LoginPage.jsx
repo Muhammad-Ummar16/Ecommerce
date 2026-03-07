@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, CheckCircle2 } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 import axios from 'axios';
@@ -57,11 +57,17 @@ const LoginPage = () => {
 
     return (
         <AuthLayout>
-            <div className="w-full animate-fade-in">
-                <h2 className="text-3xl font-bold text-[#3D3028] mb-2 text-center">Welcome Back</h2>
-                <p className="text-sm text-gray-500 mb-8 text-center uppercase tracking-widest font-medium">Log in to your account</p>
+            <div className="w-full">
+                <div className="mb-10 text-center lg:text-left">
+                    <h2 className="text-4xl font-black text-[#3D3028] mb-3 uppercase tracking-tight leading-tight">
+                        Welcome <br /> back
+                    </h2>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-[0.3em] font-black">
+                        Access your premium workspace
+                    </p>
+                </div>
 
-                <div className="w-full flex justify-center mb-6">
+                <div className="w-full flex justify-center lg:justify-start mb-8">
                     <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={() => setError('Google login failed')}
@@ -71,75 +77,81 @@ const LoginPage = () => {
                     />
                 </div>
 
-                <div className="flex items-center gap-4 mb-6">
-                    <div className="h-px flex-1 bg-gray-200"></div>
-                    <span className="text-xs text-gray-400 uppercase tracking-wider">OR</span>
-                    <div className="h-px flex-1 bg-gray-200"></div>
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="h-px flex-1 bg-gray-100"></div>
+                    <span className="text-[10px] text-gray-300 font-bold tracking-widest">SECURE LOGIN</span>
+                    <div className="h-px flex-1 bg-gray-100"></div>
                 </div>
                 ...
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1 ml-1" htmlFor="emailPhone">Email</label>
-                        <input
-                            id="emailPhone"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="johncanny@gmail.com"
-                            className="w-full bg-white border border-gray-200 rounded-full px-5 py-3 text-sm outline-none focus:border-[#7A5C4A] focus:ring-1 focus:ring-[#7A5C4A] transition-all shadow-sm"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1 ml-1" htmlFor="password">Password</label>
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div className="space-y-2 group">
+                        <label className="block text-[10px] font-black text-[#7A5C4A] uppercase tracking-widest ml-4 transition-colors group-focus-within:text-[#3D3028]" htmlFor="emailPhone">Email Address</label>
                         <div className="relative">
                             <input
-                                id="password"
-                                type={showPassword ? "text" : "password"}
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="••••••••"
-                                className="w-full bg-white border border-gray-200 rounded-full pl-5 pr-12 py-3 text-sm outline-none focus:border-[#7A5C4A] focus:ring-1 focus:ring-[#7A5C4A] transition-all shadow-sm tracking-[0.2em]"
+                                id="emailPhone"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@example.com"
+                                className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold text-[#3D3028] outline-none focus:bg-white focus:border-[#3D3028] focus:ring-[6px] focus:ring-[#3D3028]/5 transition-all duration-300 shadow-sm placeholder:text-gray-300 relative z-10"
                                 required
                             />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                            >
-                                {showPassword ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                            </button>
+                            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-[#E3CBC1] to-[#D0B8A8] opacity-0 group-focus-within:opacity-100 blur-[2px] transition-opacity duration-300" />
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 pb-4">
-                        <label className="flex items-center gap-2 cursor-pointer group">
+                    <div className="space-y-2 group">
+                        <label className="block text-[10px] font-black text-[#7A5C4A] uppercase tracking-widest ml-4 transition-colors group-focus-within:text-[#3D3028]" htmlFor="password">Security Key</label>
+                        <div className="relative">
+                            <div className="relative z-10">
+                                <input
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl pl-6 pr-14 py-4 text-sm font-bold text-[#3D3028] outline-none focus:bg-white focus:border-[#3D3028] focus:ring-[6px] focus:ring-[#3D3028]/5 transition-all duration-300 shadow-sm tracking-[0.3em] placeholder:text-gray-300"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-[#3D3028] transition-colors"
+                                >
+                                    {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                                </button>
+                            </div>
+                            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-[#D0B8A8] to-[#E3CBC1] opacity-0 group-focus-within:opacity-100 blur-[2px] transition-opacity duration-300" />
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2">
+                        <label className="flex items-center gap-3 cursor-pointer group">
                             <div className="relative flex items-center">
                                 <input type="checkbox" className="peer sr-only" />
-                                <div className="w-4 h-4 border border-gray-300 rounded bg-white peer-checked:bg-[#7A5C4A] peer-checked:border-[#7A5C4A] transition-all"></div>
-                                <svg className="absolute w-3 h-3 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                <div className="w-5 h-5 border border-gray-200 rounded-lg bg-white peer-checked:bg-[#3D3028] peer-checked:border-[#3D3028] transition-all"></div>
+                                <svg className="absolute w-3.5 h-3.5 text-[#E3CBC1] left-[3px] top-[3px] opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <span className="text-xs text-gray-600 group-hover:text-[#7A5C4A] transition-colors">Remember Me</span>
+                            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-[#3D3028] transition-colors">Keep me signed in</span>
                         </label>
-                        <a href="#" className="text-xs text-gray-600 hover:text-[#7A5C4A] hover:underline transition-all">Forgot password?</a>
+                        <a href="#" className="text-[11px] font-black text-[#7A5C4A] uppercase tracking-widest hover:text-[#3D3028] transition-all">Recovery</a>
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-[#6B5145] hover:bg-[#574438] text-white rounded-full py-3.5 text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                        className="w-full bg-[#3D3028] hover:bg-black text-white rounded-2xl py-5 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 shadow-xl shadow-[#3D3028]/10 hover:shadow-[#3D3028]/20 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-3 group"
                     >
-                        {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                        {loading ? 'Logging in...' : 'Login'}
+                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-4 h-4 text-[#E3CBC1] group-hover:scale-125 transition-transform" />}
+                        {loading ? 'Authenticating...' : 'Sign In Now'}
                     </button>
                 </form>
 
-                <p className="text-center text-xs text-gray-500 mt-8">
-                    Don't have an account? <Link to="/signup" className="text-[#6B5145] font-semibold hover:underline">Sign up</Link>
+                <p className="text-center text-[10px] font-bold text-gray-400 mt-10 uppercase tracking-widest">
+                    New to the collection? <Link to="/signup" className="text-[#3D3028] font-black hover:underline underline-offset-4">Create Account</Link>
                 </p>
             </div>
         </AuthLayout>
